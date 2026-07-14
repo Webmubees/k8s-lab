@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import socket
+import os
 
 app = FastAPI()
 
@@ -8,9 +9,9 @@ def home():
     return {
         "Service" : "General Service",
         "hostname" : socket.gethostname(),
-        "company" : "k8s-labs",
-        "version" : "1.0.0",
-        "environment" : "deployment"
+        "company" : os.getenv("COMPANY"),
+        "version" : os.getenv("VERSION"),
+        "environment" : os.getenv("ENVIRONMENT")
     }
 
 @app.get("/health")

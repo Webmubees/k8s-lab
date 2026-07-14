@@ -19,8 +19,13 @@ spec:
     spec:
       containers:
       - name: general-service
-        image: general-service:v1
+        image: general-service:v2
         imagePullPolicy: Never
 
         ports:
         - containerPort: 8000
+
+        envFrom:
+          - configMapRef:
+              name: general-config
+              

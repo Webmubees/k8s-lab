@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: general-config
+
+data:
+  COMPANY: "k8s-lab"
+  VERSION: "2.0.0"
+  ENVIRONMENT: "development"
