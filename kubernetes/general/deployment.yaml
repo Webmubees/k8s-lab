@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: general-service
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: general-service
+
+  template:
+    metadata:
+      labels:
+        app: general-service
+
+    spec:
+      containers:
+      - name: general-service
+        image: general-service:v1
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 8000
