@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: general-service
-        image: general-service:v2
+        image: general-service:v4
         imagePullPolicy: Never
 
         ports:
@@ -31,3 +31,21 @@ spec:
           
           - secretRef:
               name: general-secret
+        
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+          
+
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
+          successThreshold: 2
