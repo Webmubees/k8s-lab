@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi import HTTPException
 import socket
 import os
-
+import time
 
 app = FastAPI()
 
@@ -18,13 +18,12 @@ def home():
 
 @app.get("/health")
 def health():
-    
-    raise HTTPException(status_code=500 , detail="Database unavailable")
+    while True:
+        time.sleep(1)
 
 @app.get("/live")
 def live():
     return {"status": "alive"}
-
 
 
 READY = True
