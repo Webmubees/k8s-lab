@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: general-service
-        image: general-service:v5
+        image: general-service:v7
         imagePullPolicy: Never
 
         ports:
@@ -34,7 +34,7 @@ spec:
         
         livenessProbe:
           httpGet:
-            path: /health
+            path: /live
             port: 8000
           initialDelaySeconds: 10
           periodSeconds: 10

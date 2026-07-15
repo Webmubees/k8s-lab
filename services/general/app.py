@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi import HTTPException
 import socket
 import os
-import time
+
 
 app = FastAPI()
 
@@ -16,20 +16,28 @@ def home():
         "environment" : os.getenv("ENVIRONMENT")
     }
 
-@app.get("/health")
-def health():
-    while True:
-        time.sleep(1)
 
 @app.get("/live")
 def live():
     return {"status": "alive"}
 
+ready = True
 
-READY = True
 @app.get("/ready")
-def ready():
-    if READY:
+def ready_check():
+    if ready:
         return {"status": "ready"}
+    raise HTTPException(status_code=503, detail="Service Not Ready")
 
-    raise HTTPException(status_code=503, detail="Not Ready")
+
+@app.post("/debug/not-ready")
+def not_ready():
+    global ready
+    ready = False
+    return {"status": "Pod is now Not Ready"}
+
+@app.post("/debug/ready")
+def ready_again():
+    global ready
+    ready = True
+    return {"status": "Pod is Ready Again"}
