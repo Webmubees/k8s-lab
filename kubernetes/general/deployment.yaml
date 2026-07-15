@@ -28,4 +28,6 @@ spec:
         envFrom:
           - configMapRef:
               name: general-config
-              
+          
+          - secretRef:
+              name: general-secret
