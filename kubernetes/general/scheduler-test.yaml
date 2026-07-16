@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: scheduler-test
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: scheduler-test
+
+  template:
+    metadata:
+      labels:
+        app: scheduler-test
+
+    spec:
+      containers:
+      - name: scheduler-test
+
+        image: nginx:latest
+
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "128Mi"
+
+          limits:
+            cpu: "1000m"
+            memory: "128Mi"
