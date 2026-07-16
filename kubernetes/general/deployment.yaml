@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: general-service
-        image: general-service:v7
+        image: general-service:v8
         imagePullPolicy: Never
 
         ports:
@@ -49,3 +49,12 @@ spec:
           periodSeconds: 5
           failureThreshold: 3
           successThreshold: 2
+        
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+
+          limits:
+            cpu: "1000m"
+            memory: "256Mi"

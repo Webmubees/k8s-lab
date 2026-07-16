@@ -41,3 +41,9 @@ def ready_again():
     global ready
     ready = True
     return {"status": "Pod is Ready Again"}
+
+@app.get("/cpu")
+def cpu():
+    x = 0
+    while True:
+        x += 1
