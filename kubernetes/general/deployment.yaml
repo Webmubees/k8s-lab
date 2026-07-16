@@ -19,19 +19,19 @@ spec:
     spec:
       containers:
       - name: general-service
-        image: general-service:v8
+        image: general-service:v10
         imagePullPolicy: Never
 
         ports:
         - containerPort: 8000
 
         envFrom:
-          - configMapRef:
-              name: general-config
-          
-          - secretRef:
-              name: general-secret
-        
+        - configMapRef:
+            name: general-config
+
+        - secretRef:
+            name: general-secret
+
         livenessProbe:
           httpGet:
             path: /live
@@ -39,7 +39,6 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
           failureThreshold: 3
-          
 
         readinessProbe:
           httpGet:
@@ -49,12 +48,12 @@ spec:
           periodSeconds: 5
           failureThreshold: 3
           successThreshold: 2
-        
+
         resources:
           requests:
             cpu: "100m"
             memory: "128Mi"
 
           limits:
-            cpu: "1000m"
+            cpu: "250m"
             memory: "256Mi"
