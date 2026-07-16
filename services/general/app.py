@@ -66,13 +66,21 @@ def ready_again():
 # -----------------------------
 # CPU Stress Test
 # -----------------------------
+
 @app.get("/cpu")
 def cpu():
+
+    end_time = time.time() + 10      # Burn CPU for 10 seconds
+
     x = 0
 
-    while True:
+    while time.time() < end_time:
         x += 1
 
+    return {
+        "status": "CPU work completed",
+        "hostname": socket.gethostname()
+    }
 # -----------------------------
 # Memory Leak (OOMKilled Test)
 # -----------------------------
