@@ -3,7 +3,7 @@ kind: Deployment
 
 metadata:
   name: general-service
-  namespace: development
+  
 
 spec:
   replicas: 3
