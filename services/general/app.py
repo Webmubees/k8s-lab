@@ -8,6 +8,13 @@ from metrics import (
     REQUEST_LATENCY,
     ACTIVE_REQUESTS
 )
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s"
+)
+logger = logging.getLogger("general-service")
 
 app = FastAPI()
 
@@ -24,6 +31,14 @@ async def metrics_middleware(request, call_next):
     response = await call_next(request)
 
     duration = time.time() - start_time
+
+    logger.info(
+        "Request completed | method=%s path=%s status=%s duration=%.3fs",
+        method,
+        endpoint,
+        response.status_code,
+        duration
+    )
 
     # Count this request
     REQUEST_COUNT.labels(
@@ -89,6 +104,7 @@ def ready_check():
 def not_ready():
     global ready
     ready = False
+    logger.warning("Pod marked as not READY ")
     return {
         "status": "Pod is now Not Ready"
     }
@@ -97,6 +113,7 @@ def not_ready():
 def ready_again():
     global ready
     ready = True
+    logger.warning("Pod marked as READY")
     return {
         "status": "Pod is Ready Again"
     }
@@ -108,6 +125,7 @@ def ready_again():
 @app.get("/cpu")
 def cpu():
 
+    logger.info("Cpu stress test started")
     end_time = time.time() + 10      # Burn CPU for 10 seconds
 
     x = 0
@@ -115,6 +133,7 @@ def cpu():
     while time.time() < end_time:
         x += 1
 
+    logger.info("Cpu stress test completed")
     return {
         "status": "CPU work completed",
         "hostname": socket.gethostname()
@@ -126,6 +145,7 @@ memory_store = []
 
 @app.get("/memory")
 def memory_test():
+    logger.info("Memory test started")
     for _ in range(400):   # Allocate ~400 MB
         memory_store.append("A" * 1024 * 1024)
         time.sleep(0.2)
@@ -146,6 +166,8 @@ def metrics():
 
 @app.get("/error")
 def error():
+
+    logger.error("Simulated Internal Server Error")
     raise HTTPException(
         status_code=500,
         detail="Internal Server Error"

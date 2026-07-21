@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: general-service
-        image: general-service:v15
+        image: general-service:v16
         imagePullPolicy: Never
 
         ports:
