@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+
+metadata:
+  name: high-cpu-alert
+  labels:
+    release: monitoring
+
+spec:
+  groups:
+  - name: cpu.rules
+    rules:
+    - alert: HighCPUUsage
+      expr: rate(container_cpu_usage_seconds_total{namespace="default",container!="POD",container!=""}[1m]) > 0.5
+      for: 30s
+
+      labels:
+        severity: warning
+
+      annotations:
+        summary: "High CPU Usage"
+        description: "Container CPU usage is above 50% for 30 seconds."

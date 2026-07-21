@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+
+metadata:
+  name: high-memory-alert
+  labels:
+    release: monitoring
+
+spec:
+  groups:
+  - name: memory.rules
+    rules:
+    - alert: HighMemoryUsage
+      expr: |
+        container_memory_working_set_bytes{
+          namespace="default",
+          pod=~"general-service.*"
+        } > 200 * 1024 * 1024
+      for: 8s
+
+      labels:
+        severity: warning
+
+      annotations:
+        summary: "High Memory Usage"
+        description: "Container memory usage is above 200 MB for more than 8 seconds."
